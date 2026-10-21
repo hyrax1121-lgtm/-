@@ -63,8 +63,10 @@ struct EntryEditorView: View {
                 }
 
                 if let raw = draft.transcriptRaw {
-                    Section("转写原文 · 只读") {
+                    Section {
                         Text(raw).font(.system(size: 17)).textSelection(.enabled)
+                    } header: {
+                        Text("转写原文 · 只读")
                     } footer: { Text("校对不会改动这份原文。删除整条记录时，原文和录音也会一并删除。") }
                 }
 

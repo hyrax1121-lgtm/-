@@ -26,7 +26,7 @@ struct SettingsView: View {
                 Label("记录保存在这台 iPhone", systemImage: "iphone.gen3")
                 Notice(text: "没有账号，也不上传日记到应用服务器。语音只尝试本机识别；选择 iCloud Drive 作为备份位置时，备份由系统保存到你的 iCloud。")
             }
-            Section("晚间提醒") {
+            Section {
                 Toggle("启用提醒", isOn: $reminderEnabled)
                 if reminderEnabled {
                     DatePicker("提醒时间", selection: $reminderTime, displayedComponents: .hourAndMinute)
@@ -35,10 +35,12 @@ struct SettingsView: View {
                 Button(isApplyingReminder ? "正在应用…" : "应用提醒设置") { applyReminder() }.disabled(isApplyingReminder)
                 Notice(text: reminders.statusText)
                 Button("打开系统设置") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
+            } header: {
+                Text("晚间提醒")
             } footer: {
                 Text("锁屏通知只显示中性提醒，不显示日记内容或人物。想休息时可以关闭；iOS 无法可靠告诉应用你是否忽略了提醒，因此本版不自动判断或催促。")
             }
-            Section("完整备份") {
+            Section {
                 Button("选择备份文件夹") { pickerMode = .backupFolder; showPicker = true }
                 LabeledContent("当前位置", value: backup.selectedFolderName ?? "尚未选择")
                 if let date = backup.lastSuccessfulBackupAt {
@@ -56,6 +58,8 @@ struct SettingsView: View {
                     catch { message = error.localizedDescription }
                 }
                 Notice(text: backup.statusText)
+            } header: {
+                Text("完整备份")
             } footer: {
                 Text("完整备份是包含 JSON、逐日 Markdown 和录音附件的文件夹。可选择「我的 iPhone」或 iCloud Drive。系统后台执行由 iOS 决定，不保证准时；打开 App 时会检查并补做。备份成功时间以实际完成为准。")
             }
